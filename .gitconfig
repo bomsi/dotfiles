@@ -3,5 +3,6 @@
 	email = bomsi@users.noreply.github.com
 	signingkey = 4F6ABEA458B543B6
 
-[commit]
-	gpgsign = true
+#[commit]
+#	gpgsign = true
+

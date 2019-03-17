@@ -14,4 +14,5 @@ This repository contains my current dotfiles and scripts.
 	ln -s dotfiles/.local/bin ~/.local/bin
 	ln -s dotfiles/.gitconfig ~/.gitconfig
 	ln -s dotfiles/.vimrc ~/.vimrc
+	ln -s dotfiles/.bash_aliases ~/.bash_aliases
 ```
