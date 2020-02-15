@@ -1,3 +1,6 @@
+:set listchars=eol:⏎,tab:␉·,trail:␠,nbsp:⎵
+:set list
+
 syn on
 
 au BufNewFile,BufRead *.py
