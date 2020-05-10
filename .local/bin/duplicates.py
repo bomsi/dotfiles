@@ -12,7 +12,8 @@ stdout.flush()
 
 files = []
 
-for dirpath, dirnames, filenames in os.walk(rootdir):
+# XXX in case you have circular symlinks, we'll loop forever
+for dirpath, dirnames, filenames in os.walk(rootdir, followlinks=True):
     for filename in filenames:
         currentfilename = join(dirpath, filename)
         try:
@@ -26,7 +27,7 @@ for dirpath, dirnames, filenames in os.walk(rootdir):
 
 print('[i] sorting ' + str(len(files)) + ' files by size')
 stdout.flush()
-files.sort(key = lambda t: t[1])
+files.sort(key = lambda t: t[1], reverse=True)
 
 print('[i] removing unique files by size')
 stdout.flush()
@@ -37,26 +38,26 @@ print('[i] hashing remaining ' + str(len(files)) + ' files')
 stdout.flush()
 duplicates = defaultdict(list)
 
-for filename in files:
-    if filename[1] > 102400000:
-        print('[i] hashing large file: ' + filename[0])
+for f in files:
+    if f[1] > 102400000:
+        print('[i] hashing large file: ' + f[0])
         stdout.flush()
     hasher = hashlib.sha256()
     try:
-        with open(filename[0], 'rb') as file:
+        with open(f[0], 'rb') as file:
             for chunk in iter(lambda: file.read(4096), b""):
                 hasher.update(chunk)
-        duplicates[hasher.hexdigest()].append(filename[0])
+        duplicates[hasher.hexdigest()].append(f)
     except PermissionError:
-        print('[-] could not hash ' + filename[0] + ' due to permissions')
+        print('[-] could not hash ' + f[0] + ' due to permissions')
         stdout.flush()
     except OSError:
-        print('[-] could not hash ' + filename[0] + ' due to OS error')
+        print('[-] could not hash ' + f[0] + ' due to OS error')
         stdout.flush()
 
 for candidate in duplicates.items():
     if len(candidate[1]) > 1:
         print('[+] duplicates with hash ' + candidate[0] + ':')
         for duplicate in candidate[1]:
-            print(duplicate)
+            print(duplicate[0] + ' (' + str(duplicate[1]) + ' bytes)')
             stdout.flush()
