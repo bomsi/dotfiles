@@ -3,4 +3,4 @@ alias mountdislocker='mkdir -p /mnt/dislocker; mkdir -p /mnt/dislockerm; dislock
 alias mountdislockerrw='mkdir -p /mnt/dislocker; mkdir -p /mnt/dislockerm; dislocker -v -u /dev/sdb1 -- /mnt/dislocker && mount -o loop /mnt/dislocker/dislocker-file /mnt/dislockerm'
 alias umountdislocker='umount /mnt/dislocker/dislocker-file && umount dislocker'
 alias del='srm -i -vv -E'
-
+alias torssh="ssh -o ProxyCommand='nc -x 127.0.0.1:9050 %h %p'"
